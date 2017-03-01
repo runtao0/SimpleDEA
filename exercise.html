@@ -10,16 +10,17 @@
 
     <!-- Content -->
 
-    <script src="csUtils.js"></script>
     <script src="exercise.js"></script>
+    <script src="csUtils.js"></script>
     <script>
+      var something = new csAPI(simpleDEArequest);
       var cs = function(result) {
         console.log(result);
-        window.setTimeout(function() {
-          csApi.getData(cs);
-        }, 3000);
+        // window.setTimeout(function() {
+        //   something.getData(cs);
+        // }, 3000);
       };
-      csApi.getData(cs);
+      something.getData(cs);
     </script>
   </body>
 </html>
