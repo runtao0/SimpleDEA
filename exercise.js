@@ -6,12 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   requestID20.getData(handleRecords).then(() => {
     store.populateUL();
-    // refactor
-    // search
-    // find duplicate records
-    // animation
+
+    // show "no results found"
+    // keep same view
     // pagenate
-// loading screen
+    // loading screen
     const searchBar = document.getElementById("search");
     const viewButtons = document.getElementById("show_opts")
     store.addEvents(viewButtons, searchBar);
@@ -21,4 +20,4 @@ document.addEventListener("DOMContentLoaded", () => {
 // document.addEventListener("")
 
 
-// comment that show my thought process
+// comments that show my thought process

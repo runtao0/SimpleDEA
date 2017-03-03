@@ -166,14 +166,17 @@ li {
   padding: 10px 20px;
   width: calc(100% - 40px);
   transition: background 0.5s ease;
+  border-bottom: 1px solid rgb(136, 136, 136);
 }
 
 #providers_container > li:nth-child(2n) {
   background: rgb(235, 235, 235);
 }
 
-li:not(:last-child) {
-  border-bottom: 1px solid rgb(136, 136, 136)
+
+
+.detail > li:last-child {
+  border-bottom: 0px;
 }
 
 .detail > li {
