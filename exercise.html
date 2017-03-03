@@ -5,22 +5,26 @@
     <title>SimpleDEA by [your-name]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="exercise.css">
+    <script src="csUtils.js"></script>
+    <script src="professional.js"></script>
+    <script src="record_store.js"></script>
+    <script src="exercise.js"></script>
   </head>
   <body>
-
-    <!-- Content -->
-
-    <script src="exercise.js"></script>
-    <script src="csUtils.js"></script>
-    <script>
-      var something = new csAPI(simpleDEArequest);
-      var cs = function(result) {
-        console.log(result);
-        // window.setTimeout(function() {
-        //   something.getData(cs);
-        // }, 3000);
-      };
-      something.getData(cs);
-    </script>
+    <main>
+      <header class="group">
+        <h1 class="title">SimpleDEA</h1>
+        <h1 class="view_opt">Show Only:
+          <button id="expired">Expired</button>
+          <button id="valid">Valid</button>
+          <button id="all">All</button>
+        </h1>
+      </header>
+      <div class="axis group">
+        <h2 class="title">Name</h2>
+        <h2 class="view_opt">Expiration Status</h2>
+      </div>
+      <ul id="providers_container">
+      </ul>
+    </main>
   </body>
-</html>

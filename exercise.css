@@ -1,1 +1,148 @@
 /* Styles */
+
+/* Reset */
+html, body, header, nav, h1, a, ul, li,
+strong, main, section, img, div, h2, p,
+form, fieldset, label, input, textarea,
+button, article, footer, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  color: inherit;
+  background: transparent;
+  font-weight: inherit;
+  z-index: inherit;
+  line-height: inherit;
+}
+
+ul, li {
+  list-style: none;
+  width:auto;
+}
+
+body {
+  background: transparent;
+  color: black;
+  font-family: sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  box-sizing: content-box;
+  z-index: 0;
+}
+
+button:hover, li:hover{
+  cursor: pointer;
+}
+
+/*clearfix*/
+.group:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+/* Container */
+main {
+  margin: 20px;
+  height: calc(100vh - 40px);
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  border: 1px solid black;
+  /*position: relative;*/
+}
+
+header {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  width: calc(100% - 40px);
+  height: auto;
+  line-height: 1.5em;
+  background: rgb(109, 190, 195);
+  padding: 10px 20px;
+}
+
+.axis {
+  font-size: 1em;
+  padding: 10px 20px;
+  background: rgb(199, 199, 199)
+}
+
+.title {
+  float: left;
+}
+
+.view_opt {
+  float: right;
+}
+
+header > * {
+  /*display: inline;*/
+  font-size: 1.5em;
+}
+
+@media (max-width: 900px) {
+  main {
+    width: calc(100% - 40px);
+  }
+}
+
+/* UL */
+ul {
+  width: inherit;
+  height: calc(100% - 80px);
+  overflow: scroll;
+  position: relative;
+}
+
+/* List Item */
+li {
+  padding: 10px 20px;
+  width: calc(100% - 40px);
+  transition: background 0.5s ease;
+  align-items: center;
+}
+
+li:not(:last-child) {
+  border-bottom: 1px solid rgb(136, 136, 136)
+}
+
+li:hover {
+  background: rgb(178, 201, 203);
+}
+
+/*li > div {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}*/
+
+ul h2 {
+  padding: 5px 0px;
+}
+
+ul h2:not(:first-child) {
+  font-size: 1em;
+  padding: 5px 10px;
+}
+
+.red {
+  border: 1px solid rgb(252, 98, 98);
+  border-radius: 5px;
+  background: rgb(238, 148, 148);
+}
+
+.green {
+  border: 1px solid rgb(100, 163, 96);
+  border-radius: 5px;
+  background: rgb(153, 209, 150);
+}
