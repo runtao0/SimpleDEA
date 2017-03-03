@@ -13,6 +13,14 @@ class Professional {
     this._expDisplay = this._expDisplay.bind(this);
   }
 
+  noteDup() {
+    this.name = `${this.name} (2)`;
+  }
+
+  addOneMilisec() {
+    this.time += 1;
+  }
+
   addClass(name) {
     this.li.classList.add(name);
   }

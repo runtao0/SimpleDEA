@@ -12,10 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // animation
     // pagenate
 // loading screen
-
+    const searchBar = document.getElementById("search");
     const viewButtons = document.getElementById("show_opts")
-    store.addEvents(viewButtons);
+    store.addEvents(viewButtons, searchBar);
   });
 })
 
 // document.addEventListener("")
+
+
+// comment that show my thought process
