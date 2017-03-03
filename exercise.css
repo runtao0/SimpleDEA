@@ -1,10 +1,7 @@
-/* Styles */
-
 /* Reset */
-html, body, header, nav, h1, a, ul, li,
-strong, main, section, img, div, h2, p,
-form, fieldset, label, input, textarea,
-button, article, footer, small {
+html, body, header, h1, a, ul,
+li, strong, main, section, h2,
+form, label, input, button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -12,19 +9,12 @@ button, article, footer, small {
   font-family: inherit;
   font-size: inherit;
   box-sizing: inherit;
-  text-align: inherit;
-  text-decoration: inherit;
-  vertical-align: inherit;
   color: inherit;
   background: transparent;
   font-weight: inherit;
   z-index: inherit;
   line-height: inherit;
-}
-
-ul, li {
-  list-style: none;
-  width:auto;
+  transition: background 0.5s ease;
 }
 
 body {
@@ -38,9 +28,14 @@ body {
   z-index: 0;
 }
 
+form {
+  display: inline;
+}
+
 button {
-  padding: 2px 5px;
-  margin: 0 5px;
+  padding: 5px 5px;
+  margin: 0 5px 0 0;
+  display: inline;
 }
 
 strong {
@@ -54,105 +49,7 @@ strong {
   display: block;
 }
 
-/* Container */
-main {
-  background: white;
-  margin: 20px;
-  height: calc(100vh - 80px);
-  width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 10px;
-  border: 1px solid black;
-  box-shadow: 0 1px 5px rgb(149, 149, 149);
-}
-
-header {
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-  width: calc(100% - 40px);
-  height: auto;
-  line-height: 2em;
-  background: rgb(39, 59, 129);
-  color: white;
-  padding: 20px 20px 15px 20px;
-  font-size: 2em;
-}
-
-header > *:not(:first-child) {
-  font-size: .5em;
-  line-height: 1em;
-  padding: 5px 0;
-}
-
-input[type="text"] {
-  display: inline;
-  border: 1px solid rgb(136, 136, 136);
-  background: white;
-}
-
-.axis {
-  font-size: 1em;
-  padding: 10px 20px;
-  background: rgb(75, 75, 75);
-  color: white;
-  border-bottom: 1px solid black;
-  border-top: 1px solid black;
-}
-
-.title {
-  float: left;
-}
-
-.view_opt {
-  float: right;
-}
-
-
-/* UL */
-ul {
-  width: 100%;
-  height: calc(100% - 199px);
-  overflow: scroll;
-  position: relative;
-}
-
-#providers_container {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-/* List Item */
-li {
-  padding: 10px 20px;
-  width: calc(100% - 40px);
-  transition: background 0.5s ease;
-  align-items: center;
-}
-
-#providers_container > li:nth-child(2n) {
-  background: rgb(235, 235, 235);
-}
-
-li:not(:last-child) {
-  border-bottom: 1px solid rgb(136, 136, 136)
-}
-
-#providers_container > li:hover, #providers_container > .selected:nth-child(1n),
-button:hover, li:hover{
-  cursor: pointer;
-  background: rgb(185, 209, 255);
-}
-
-ul h2 {
-  padding: 5px 0px;
-}
-
-ul h2:not(:first-child) {
-  font-size: 1em;
-  padding: 5px 10px;
-}
-
+/*Colors*/
 .red {
   border: 1px solid rgb(252, 98, 98);
   border-radius: 5px;
@@ -174,13 +71,130 @@ ul h2:not(:first-child) {
 .white {
   border: 1px solid white;
   border-radius: 5px;
-  background: rgb(118, 141, 175)
+  background: rgb(92, 116, 153)
 }
 
+/* Container and Header */
+main {
+  min-height: 600px;
+  background: white;
+  margin: 20px;
+  height: calc(100vh - 80px);
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  border: 1px solid black;
+  box-shadow: 0 1px 5px rgb(149, 149, 149);
+}
+
+header {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  width: calc(100% - 40px);
+  height: auto;
+  line-height: 1.5em;
+  background: rgb(39, 59, 129);
+  color: white;
+  padding: 20px 20px 15px 20px;
+  font-size: 2em;
+}
+
+.filters, .page_view {
+  font-size: .5em;
+  line-height: .75em;
+  padding-top: 10px;
+}
+
+input[type="text"] {
+  display: inline;
+  border: 1px solid rgb(136, 136, 136);
+  background: rgb(200, 203, 241);
+  padding: 2px 5px;
+  color: black;
+}
+
+.axis {
+  font-size: 1em;
+  padding: 10px 20px;
+  background: rgb(75, 75, 75);
+  color: white;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+.title {
+  float: left;
+}
+
+.view_opt {
+  float: right;
+}
+
+.axis .title::after {
+  content: " (click row to view more info)";
+}
+
+/* UL */
+ul {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  position: relative;
+}
+
+#providers_container {
+  height: calc(100% - 189px);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+ul h2 {
+  border: 1px solid transparent;
+  padding: 5px 0px;
+  display: inline;
+}
+
+ul h2:not(:first-child) {
+  font-size: 1em;
+  padding: 5px 10px;
+}
+
+/* List Item */
+li {
+  list-style: none;
+  padding: 10px 20px;
+  width: calc(100% - 40px);
+  transition: background 0.5s ease;
+}
+
+#providers_container > li:nth-child(2n) {
+  background: rgb(235, 235, 235);
+}
+
+li:not(:last-child) {
+  border-bottom: 1px solid rgb(136, 136, 136)
+}
+
+.detail > li {
+  width: 75%;
+}
+
+.detail .view_opt {
+  padding: 0;
+}
+
+/* Hover */
+#providers_container > li:hover,
+#providers_container > .selected:nth-child(1n),
+button:hover, li:hover{
+  cursor: pointer;
+  background: rgb(209, 221, 244);
+}
 
 @media (max-width: 900px) {
   main {
-    width: 90%;
+    width: 400px;
     margin: 20px 0;
     margin-left: auto;
     margin-right: auto;
@@ -188,5 +202,18 @@ ul h2:not(:first-child) {
 
   ul {
     width: 100%;
+  }
+
+  .filters > .view_opt {
+    float: left;
+    padding-top: 10px;
+  }
+
+  .axis .title::after {
+    content: none;
+  }
+
+  #providers_container {
+    height: calc(100% - 223px);
   }
 }

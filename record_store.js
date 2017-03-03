@@ -7,16 +7,17 @@ class RecordStore {
     this.valid = {};
     this.today = new Date();
     this.currentView = "all";
-    this._create = this._create.bind(this);
+    
+    this._createProfessional = this._createProfessional.bind(this);
     records.forEach((record) => {
-      this._create(record)
+      this._createProfessional(record)
     });
   }
 
   addEvents(buttons) {
     this.providers_container
       .addEventListener('click', this._clickOnProfessional.bind(this));
-    buttons.addEventListener("click", this._clickOnButtons.bind(this));
+    buttons.addEventListener('click', this._clickOnButtons.bind(this));
   }
 
   _clickOnButtons(e) {
@@ -41,7 +42,13 @@ class RecordStore {
 
   _clickOnProfessional(e) {
     e.preventDefault();
-    if (this._selectLIFrom(e.path) === this.selectedID) return;
+    if (this._selectLIFrom(e.path) === this.selectedID) {
+      this.selectedProfessional.removeClass("selected");
+      this.selectedProfessional.li.removeChild(this.details);
+      this.details = false;
+      this.selectedID = false;
+      return;
+    }
     this.selectedID = this._selectLIFrom(e.path)
     if (this.details) {
       this.selectedProfessional.removeClass("selected");
@@ -63,12 +70,9 @@ class RecordStore {
     return (element.tagName === "LI") && element.id;
   }
 
-  _create(obj) {
+  _createProfessional(obj) {
     let formattedName = this._formatName(obj.name);
     let expirationDifference = new Date(obj.expiration_date) - this.today;
-    // while (this.storeByName.hasOwnProperty(formattedName)) {
-    //   formattedName = formattedName + " (2)" //does not account for triplets or above
-    // }
     while (this.storeByTimeToExp.hasOwnProperty(expirationDifference)) {
       expirationDifference += 1;
     }
@@ -84,14 +88,14 @@ class RecordStore {
     }
   }
 
-  getByName(name) {
-    // check if name exists
-    return this.storeById[name];
-  }
-
-  getByDate(date) {
-    return this.storeByDate[date];
-  }
+  // getByName(name) {
+  //   // check if name exists
+  //   return this.storeById[name];
+  // }
+  //
+  // getByDate(date) {
+  //   return this.storeByDate[date];
+  // }
 
   populateUL(obj = this.storeByTimeToExp, limit = 30) {
     this.providers_container.innerHTML = '';
@@ -107,10 +111,6 @@ class RecordStore {
       this.storeByTimeToExp[time].createDisplay()
       this.providers_container.appendChild(this.storeByTimeToExp[time].li);
     });
-  }
-
-  removeElements () {
-
   }
 
   _formatName(name) {

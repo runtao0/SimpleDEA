@@ -49,17 +49,13 @@ class Professional {
 
   _createDetailLI(field, data) {
     const li = document.createElement("li");
-    li.innerHTML = `<strong>${field}</strong> : ${data}`
-    // const text = document.createTextNode(`${field} : ${data}`);
-    // li.appendChild(text);
+    li.innerHTML = `<h2><strong>${field} : </strong></h2><h2 class="view_opt">${data}</h2>`;
     return li;
   }
 
   _nameDisplay() {
     const h2 = document.createElement("h2");
-    h2.innerHTML = `<strong>${this.name}</strong>`
-;    // const name = document.createTextNode(this.name);
-    // h2.appendChild(name);
+    h2.innerHTML = `<strong>${this.name}</strong>`;
     h2.classList.add("title");
     return h2;
   }

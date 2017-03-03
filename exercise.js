@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   requestID20.getData(handleRecords).then(() => {
     store.populateUL();
     // refactor
-    // justify info content
     // search
     // find duplicate records
     // animation
