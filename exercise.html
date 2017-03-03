@@ -13,16 +13,20 @@
   <body>
     <main>
       <header class="group">
-        <h1 class="title">SimpleDEA</h1>
-        <h1 class="view_opt">Show Only:
-          <button id="expired">Expired</button>
-          <button id="valid">Valid</button>
-          <button id="all">All</button>
-        </h1>
+        <h1>SimpleDEA</h1>
+        <form class="search_name" action="index.html" method="post">
+          Search by Name:
+          <input type="text" name="" value="">
+        </form>
+        <h2 id="show_opts">Show:
+          <button id="expired" class="red">Expired</button>
+          <button id="valid" class="green">Active</button>
+          <button id="all" class="white">All</button>
+        </h2>
       </header>
       <div class="axis group">
-        <h2 class="title">Name</h2>
-        <h2 class="view_opt">Expiration Status</h2>
+        <h2 class="title"><strong>Name</strong></h2>
+        <h2 class="view_opt"><strong>Expiration Status</strong></h2>
       </div>
       <ul id="providers_container">
       </ul>

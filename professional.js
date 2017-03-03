@@ -1,8 +1,8 @@
 class Professional {
   constructor(name, time, { dea_number, expiration_date, npi, provider_id }) {
     this.info = {
-      'DEA Number': dea_number,
       'Expiration Date': new Date(expiration_date).toDateString(),
+      'DEA Number': dea_number,
       'NPI': npi,
       'Provider ID': provider_id,
     }
@@ -11,6 +11,14 @@ class Professional {
     this.expired = time < 0;
     this.li;
     this._expDisplay = this._expDisplay.bind(this);
+  }
+
+  addClass(name) {
+    this.li.classList.add(name);
+  }
+
+  removeClass(name) {
+    this.li.classList.remove(name);
   }
 
   setExpired() {
@@ -35,22 +43,23 @@ class Professional {
     for (let field in this.info) {
       ul.appendChild(this._createDetailLI(field, this.info[field]));
     }
-    // ul.classList.add( something );
-    console.log(ul);
+    ul.classList.add("detail");
     return ul;
   }
 
   _createDetailLI(field, data) {
     const li = document.createElement("li");
-    const text = document.createTextNode(`${field} : ${data}`);
-    li.appendChild(text);
+    li.innerHTML = `<strong>${field}</strong> : ${data}`
+    // const text = document.createTextNode(`${field} : ${data}`);
+    // li.appendChild(text);
     return li;
   }
 
   _nameDisplay() {
     const h2 = document.createElement("h2");
-    const name = document.createTextNode(this.name);
-    h2.appendChild(name);
+    h2.innerHTML = `<strong>${this.name}</strong>`
+;    // const name = document.createTextNode(this.name);
+    // h2.appendChild(name);
     h2.classList.add("title");
     return h2;
   }
@@ -61,8 +70,11 @@ class Professional {
     if (this.expired) {
       status = document.createTextNode("EXPIRED");
       h2.classList.add("red");
+    } else if (this.time < 2592000000) {
+      status = document.createTextNode("EXPIRES SOON");
+      h2.classList.add("yellow");
     } else {
-      status = document.createTextNode("VALID");
+      status = document.createTextNode("ACTIVE");
       h2.classList.add("green");
     }
     h2.appendChild(status);

@@ -6,32 +6,51 @@ class RecordStore {
     this.expired = {};
     this.valid = {};
     this.today = new Date();
+    this.currentView = "all";
     this._create = this._create.bind(this);
     records.forEach((record) => {
       this._create(record)
     });
   }
 
-  addValid() {
-
+  addEvents(buttons) {
+    this.providers_container
+      .addEventListener('click', this._clickOnProfessional.bind(this));
+    buttons.addEventListener("click", this._clickOnButtons.bind(this));
   }
 
-  addExpired() {
-
+  _clickOnButtons(e) {
+    e.preventDefault();
+    this.details = false;
+    if (e.target.id === this.currentView) return;
+    switch(e.target.id) {
+      case 'expired':
+        this.populateUL(this.expired);
+        this.currentView = 'expired';
+        break;
+      case 'valid':
+        this.populateUL(this.valid);
+        this.currentView ='valid';
+        break;
+      case 'all':
+        this.populateUL();
+        this.currentView = 'all';
+        break;
+    }
   }
 
-  removeAll() {
-
-  }
-
-  addEvent() {
-    this.providers_container.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const selectedID = this._selectLIFrom(e.path)
-      const selectedProfessional = this.storeByTimeToExp[selectedID];
-      selectedProfessional.li.appendChild(selectedProfessional.createDetails()); // this is the npi
-    });
+  _clickOnProfessional(e) {
+    e.preventDefault();
+    if (this._selectLIFrom(e.path) === this.selectedID) return;
+    this.selectedID = this._selectLIFrom(e.path)
+    if (this.details) {
+      this.selectedProfessional.removeClass("selected");
+      this.selectedProfessional.li.removeChild(this.details);
+    }
+    this.selectedProfessional = this.storeByTimeToExp[this.selectedID];
+    this.selectedProfessional.addClass("selected");
+    this.details = this.selectedProfessional.createDetails();
+    this.selectedProfessional.li.appendChild(this.details);
   }
 
   _selectLIFrom(path) {
@@ -74,9 +93,17 @@ class RecordStore {
     return this.storeByDate[date];
   }
 
-  populateUL() {
-    const first30 = Object.keys(this.storeByTimeToExp).sort().slice(0, 30);
-    first30.forEach((time) => {
+  populateUL(obj = this.storeByTimeToExp, limit = 30) {
+    this.providers_container.innerHTML = '';
+    const keys = Object.keys(obj);
+    const keysInt = [];
+    for (let x = 0; x < keys.length; x ++) {
+      keysInt[x] = parseInt(keys[x]);
+    }
+    keysInt.sort((a,b) => {
+      return a - b;
+    }).slice(0, limit)
+    .forEach((time) => {
       this.storeByTimeToExp[time].createDisplay()
       this.providers_container.appendChild(this.storeByTimeToExp[time].li);
     });

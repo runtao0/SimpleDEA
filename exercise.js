@@ -6,10 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   requestID20.getData(handleRecords).then(() => {
     store.populateUL();
-// sort out the top 30 by DATE
-// view multiple details option
+    // refactor
+    // justify info content
+    // search
+    // find duplicate records
+    // animation
+    // pagenate
 // loading screen
-//  fix issue with number of elements
-  store.addEvent();
+
+    const viewButtons = document.getElementById("show_opts")
+    store.addEvents(viewButtons);
   });
 })
+
+// document.addEventListener("")
