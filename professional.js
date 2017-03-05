@@ -7,10 +7,19 @@ class Professional {
       'Provider ID': provider_id,
     }
     this.time = time;
-    this.name = name;
+    this.name = this._formatName(name);
     this.expired = time < 0;
     this.li;
     this._expDisplay = this._expDisplay.bind(this);
+  }
+
+  _formatName(name) {
+    const capitalized = name.toLowerCase()
+      .replace(/(^|[\s-])\S/g, function (match) {
+        return match.toUpperCase();
+      });
+
+    return capitalized;
   }
 
   noteDup() {
@@ -42,6 +51,7 @@ class Professional {
     container.appendChild(this._nameDisplay());
     container.appendChild(this._expDisplay());
 
+    li.style.maxHeight = '45px';
     li.appendChild(container);
     this.li = li;
   }

@@ -1,19 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
   const requestID20 = new csAPI(simpleDEArequest);
   const handleRecords = function(response) {
-    console.log(response.length);
-    window.store = new RecordStore(response)
+    const container = document.getElementById("providers_container");
+    window.store = new RecordStore(response, container)
   };
   requestID20.getData(handleRecords).then(() => {
     store.populateUL();
-
+    // page __ of __
+//  refactor
+// test?
     // show "no results found"
-    // keep same view
-    // pagenate
     // loading screen
+    const pageView = document.getElementById("page_view");
     const searchBar = document.getElementById("search");
-    const viewButtons = document.getElementById("show_opts")
-    store.addEvents(viewButtons, searchBar);
+    const viewButtons = document.getElementById("show_opts");
+    store.addEvents(viewButtons, searchBar, pageView);
   });
 })
 

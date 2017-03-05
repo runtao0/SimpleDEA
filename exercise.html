@@ -4,8 +4,12 @@
     <meta charset="utf-8">
     <title>SimpleDEA by Runtao Yang</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Heebo:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="exercise.css">
     <script src="csUtils.js"></script>
+    <script src="page.js"></script>
     <script src="professional.js"></script>
     <script src="record_store.js"></script>
     <script src="exercise.js"></script>
@@ -13,27 +17,29 @@
   <body>
     <main>
       <header>
-        <h1>SimpleDEA</h1>
+        <h1 id="simpleDEA">SimpleDEA</h1>
         <section class="filters group">
-          <form class="search_name title" action="index.html">
-            Search by Name:
-            <input type="text" id="search" value="">
-          </form>
-          <h2 id="show_opts" class="view_opt">Show:
+          <article>
+            <h1>Search by Name:</h1>
+            <input type="text" id="search" value="" autocomplete="off">
+          </article>
+          <article id="show_opts" class="view_opt">
+            <h1>Show:</h1>
             <button id="all" class="white">All</button>
             <button id="expired" class="red">Expired</button>
-            <button id="valid" class="green">Active</button>
-          </h2>
+            <button id="active" class="green">Active</button>
+          </article>
         </section>
-        <section class="page_view group">
+        <section class="group" id="page_view">
           <button id="prev" class="white title">Prev</button>
           <button id="next" class="white view_opt">Next</button>
         </section>
+        <section class="axis group">
+          <h2><strong>Name</strong></h2>
+          <h2 id="page_count"></h2>
+          <h2><strong>Expiration Status</strong></h2>
+        </section>
       </header>
-      <section class="axis group">
-        <h2 class="title"><strong>Name</strong></h2>
-        <h2 class="view_opt"><strong>Expiration Status</strong></h2>
-      </section>
       <ul id="providers_container">
       </ul>
     </main>

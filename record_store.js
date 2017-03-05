@@ -1,10 +1,25 @@
+// RecordStore models the collection of records of professionals registed
+// with the DEA.
+//
+// It contains
+// 1. container => a reference to the DOM element that will be
+//                           the parent of all the professional li's
+// 2. storeByTimeToExp, storeByName,
+//    expired, active => dictionaries to each professional by name, time
+//                      from the present to the expiration date, and
+//                      either expired or active
+// 3. today => present stored as a Date class
+// 4. currentView => string value that keeps track of the current view
+//                   "all", "active"
+
 class RecordStore {
-  constructor(records) {
-    this.providers_container = document.getElementById("providers_container");
+  constructor(records, container) {
+    this.container = container;
     this.storeByTimeToExp = {};
     this.storeByName = {}
     this.expired = {};
-    this.valid = {};
+    this.active = {};
+    this.pages = new Page(container);
     this.today = new Date();
     this.currentView = "all";
 
@@ -18,53 +33,70 @@ class RecordStore {
     return this.storeByName[name];
   }
 
+  // 1. creates a Professional from the object (record)
+  // 2. creates dictionaries based on obj attributes needed
+  // 3. creates the DOM associated with the Professional
+  // obj => a JS/JSON object that contains, at the very least,
+  //        a name and an expiration date
   _createProfessional(obj) {
-    let formattedName = this._formatName(obj.name);
+    let name = obj.name;
     let expirationDifference = new Date(obj.expiration_date) - this.today;
-    const professional = new Professional(formattedName, expirationDifference, obj);
+    const professional = new Professional(name, expirationDifference, obj);
 
-    this._storeByValidity(professional);
+    this._storeByActivity(professional);
     this._storeByName(professional);
 
     professional.createDisplay();
   }
 
+  // 1. checks for repeats in records (only covers duplicates)
+  // 2. stores reference to professional by name for search
+  // professional => an instance of Professional
   _storeByName(professional) {
-    while (this.storeByName.hasOwnProperty(professional.name)) {
+    while (this.storeByName.hasOwnProperty(professional.name.toLowerCase())) {
       professional.noteDup();
-      console.log(professional.name);
     }
     this.storeByName[professional.name.toLowerCase()] = professional;
   }
 
-  _storeByValidity(professional) {
+// 1. checks for repeats in records and increments each record so there are
+//    unique keys for the storeByTimeToExp
+// 2. stores reference to professional by expiration date and separates
+//    active and expired
+  _storeByActivity(professional) {
     while (this.storeByTimeToExp.hasOwnProperty(professional.time)) {
       professional.addOneMilisec();
     }
     if (professional.time < 0) {                                    //expired
       this.storeByTimeToExp[professional.time] = professional;
       this.expired[professional.time] = professional;
-    } else {                                                            //valid
+    } else {                                                            //active
       this.storeByTimeToExp[professional.time] = professional;
-      this.valid[professional.time] = professional;
+      this.active[professional.time] = professional;
     }
   }
 
-  populateUL(obj = this.storeByTimeToExp, exp = true, limit = 30) {
-    this.providers_container.innerHTML = '';
+  populateUL(obj = this.storeByTimeToExp, dictionary = 'exp', limit = 30) {
+    this.container.innerHTML = '';
+    this.pages.resetPages();
     const keys = Object.keys(obj);
-    if (exp) {
-      this._appendByExp(keys, limit);
-    } else {
-      this._appendByName(keys)
+    switch(dictionary) {
+      case 'exp':
+        this._appendByExp(keys, limit);
+        break;
+      case 'name':
+        this._appendByName(keys);
+        break;
     }
   }
 
   _appendByName(keys) {
     const sorted = keys.sort();
-    for (let x = 0; x < sorted.length; x++) {
-      this.providers_container.appendChild(this.storeByName[sorted[x]].li);
-    }
+    sorted.forEach((name) => {
+      this.pages.addToPages(name);
+    });
+    this.pages.changeDictionary(this.storeByName)
+    this.pages.renderPage();
   }
 
   _appendByExp(keys, limit) {
@@ -74,17 +106,19 @@ class RecordStore {
     }
     keysInt.sort((a,b) => {
       return a - b;
-    }).slice(0, limit)
-    .forEach((time) => {
-      this.providers_container.appendChild(this.storeByTimeToExp[time].li);
+    }).forEach((time) => {
+      this.pages.addToPages(time);
     });
+    this.pages.changeDictionary(this.storeByTimeToExp);
+    this.pages.renderPage();
   }
 
-  addEvents(buttons, input) {
-    this.providers_container
+  addEvents(buttons, input, pageView) {
+    this.container
       .addEventListener('click', this._clickOnProfessional.bind(this));
     buttons.addEventListener('click', this._clickOnButtons.bind(this));
     input.addEventListener('input', this._searchByName.bind(this));
+    pageView.addEventListener('click', this.pages.turnPage.bind(this));
   }
 
   _searchByName(e) {
@@ -100,7 +134,8 @@ class RecordStore {
         matches[name] = this.storeByName[name];
       }
     });
-    this.populateUL(matches, false);
+    this.currentView = 'all';
+    this.populateUL(matches, 'name');
   }
 
   _clickOnButtons(e) {
@@ -112,20 +147,22 @@ class RecordStore {
         this.populateUL(this.expired);
         this.currentView = 'expired';
         break;
-      case 'valid':
-        this.populateUL(this.valid);
-        this.currentView ='valid';
+      case 'active':
+      debugger
+        this.populateUL(this.active);
+        this.currentView ='active';
         break;
       case 'all':
-        this.populateUL();
         this.currentView = 'all';
+        this.populateUL();
         break;
     }
   }
 
   _clickOnProfessional(e) {
     e.preventDefault();
-    if (this._selectLIFrom(e.path) === this.selectedID) {
+    if (this._selectLIFrom(e.target) === this.selectedID) {
+      this._shrink(this.selectedProfessional.li);
       this.selectedProfessional.removeClass("selected");
       this.selectedProfessional.li.removeChild(this.details);
       this.details = false;
@@ -133,33 +170,45 @@ class RecordStore {
       return;
     }
 
-    this.selectedID = this._selectLIFrom(e.path)
+    this.selectedID = this._selectLIFrom(e.target)
     if (this.details) {
+      this._shrink(this.selectedProfessional.li);
       this.selectedProfessional.removeClass("selected");
       this.selectedProfessional.li.removeChild(this.details);
     }
     this.selectedProfessional = this.storeByTimeToExp[this.selectedID];
     this.selectedProfessional.addClass("selected");
     this.details = this.selectedProfessional.createDetails();
-    this.selectedProfessional.li.appendChild(this.details);
+    this._expand(this.selectedProfessional.li);
+    this.selectedProfessional.li.appendChild(this.details)
   }
 
-  _selectLIFrom(path) {
-    for (let x = 0; x < path.length; x ++) {
-      if (this._checkIfLI(path[x])) return path[x].id;
+  _shrink(element) {
+    element.style.maxHeight = '45px';
+  }
+
+  _expand(element) {
+    element.style.maxHeight = '218px';
+  }
+
+  _selectLIFrom(node) {
+    let anotherNode = node;
+    while (anotherNode.tagName !== "LI") {
+      anotherNode = anotherNode.parentNode;
     }
+    return anotherNode.id;
   }
 
   _checkIfLI(element) {
     return (element.tagName === "LI") && element.id;
   }
 
-  _formatName(name) {
-    const capitalized = name.toLowerCase()
-      .replace(/(^|[\s-])\S/g, function (match) {
-        return match.toUpperCase();
-      });
-
-    return capitalized;
-  }
+  // _formatName(name) {
+  //   const capitalized = name.toLowerCase()
+  //     .replace(/(^|[\s-])\S/g, function (match) {
+  //       return match.toUpperCase();
+  //     });
+  //
+  //   return capitalized;
+  // }
 }
