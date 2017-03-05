@@ -8,7 +8,7 @@ const simpleDEArequest = {
 class csAPI {
   constructor({ baseUrl, path, token, id }, method = "GET", data = {}) {
     this.method = method;
-    this.url = baseUrl + path + id + '?token=' + token + '/name?limit=10';
+    this.url = baseUrl + path + id + '?token=' + token;
     this.data = data;
 
     this._requestPromise = this._requestPromise.bind(this);

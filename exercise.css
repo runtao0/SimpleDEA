@@ -1,6 +1,6 @@
 /* Reset */
 html, body, header, h1, a, ul,
-li, strong, main, section, h2,
+li, main, section, h2,
 form, label, input, button {
   margin: 0;
   padding: 0;

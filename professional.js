@@ -15,7 +15,7 @@ class Professional {
 
   _formatName(name) {
     const capitalized = name.toLowerCase()
-      .replace(/(^|[\s-])\S/g, function (match) {
+      .replace(/(^|[\s-'])\S/g, function (match) {
         return match.toUpperCase();
       });
 

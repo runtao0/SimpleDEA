@@ -40,6 +40,7 @@ class Page {
       case 'next':
         if (this.page < this.totalPages) {
           this.page += 1;
+          this._resetScroll();
           break;
         } else {
           return;
@@ -47,6 +48,7 @@ class Page {
       case 'prev':
         if (this.page > 0) {
           this.page -= 1;
+          this._resetScroll();
           break;
         } else {
           return;
@@ -54,6 +56,10 @@ class Page {
     }
     this._notifyPage();
     this.renderPage();
+  }
+
+  _resetScroll() {
+    this.container.scrollTop = 0;
   }
 
   resetPages() {
@@ -64,7 +70,7 @@ class Page {
   renderPage() {
     this.container.innerHTML = '';
     const start = this.interval * this.page;
-    const end = start + (this.interval - 1);
+    const end = start + (this.interval);
     const currentView = this.order.slice(start, end);
     for (let x = 0; x < currentView.length; x ++) {
       this.container.appendChild(this.dictionary[currentView[x]].li);

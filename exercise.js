@@ -1,16 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const requestID20 = new csAPI(simpleDEArequest);
-  const handleRecords = function(response) {
-    const container = document.getElementById("providers_container");
-    window.store = new RecordStore(response, container)
-  };
-  requestID20.getData(handleRecords).then(() => {
-    store.populateUL();
-//  refactor
-//  error message
-// test?
-    // show "no results found"
-    // loading screen
+  const container = document.getElementById("providers_container");
+  const store = new RecordStore(container);
+  requestID20.getData(store.receiveRecords).then(() => {
     const pageView = document.getElementById("page_view");
     const searchBar = document.getElementById("search");
     const viewButtons = document.getElementById("show_opts");
@@ -18,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 })
 
-// document.addEventListener("")
+// annotate
+// error message
+// refactor
+// test?
 
-
-// comments that show my thought process
+// loading screen
