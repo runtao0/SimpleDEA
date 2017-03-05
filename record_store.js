@@ -116,7 +116,7 @@ class RecordStore {
   addEvents(buttons, input, pageView) {
     this.container
       .addEventListener('click', this._clickOnProfessional.bind(this));
-    buttons.addEventListener('click', this._clickOnButtons.bind(this));
+    buttons.addEventListener('click', this._clickViewButtons.bind(this));
     input.addEventListener('input', this._searchByName.bind(this));
     pageView.addEventListener('click', this.pages.turnPage.bind(this));
   }
@@ -138,10 +138,12 @@ class RecordStore {
     this.populateUL(matches, 'name');
   }
 
-  _clickOnButtons(e) {
+  _clickViewButtons(e) {
     e.preventDefault();
     this.details = false;
     if (e.target.id === this.currentView) return;
+    // refactor this
+    document.getElementById(this.currentView).classList.toggle("current_view");
     switch(e.target.id) {
       case 'expired':
         this.populateUL(this.expired);
@@ -157,11 +159,13 @@ class RecordStore {
         this.populateUL();
         break;
     }
+    e.target.classList.toggle("current_view");
   }
 
   _clickOnProfessional(e) {
     e.preventDefault();
-    if (this._selectLIFrom(e.target) === this.selectedID) {
+    const selectedLIId = this._selectLIFrom(e.target);
+    if (selectedLIId === this.selectedID) {
       this._shrink(this.selectedProfessional.li);
       this.selectedProfessional.removeClass("selected");
       this.selectedProfessional.li.removeChild(this.details);
@@ -170,7 +174,7 @@ class RecordStore {
       return;
     }
 
-    this.selectedID = this._selectLIFrom(e.target)
+    this.selectedID = selectedLIId;
     if (this.details) {
       this._shrink(this.selectedProfessional.li);
       this.selectedProfessional.removeClass("selected");
@@ -193,7 +197,7 @@ class RecordStore {
 
   _selectLIFrom(node) {
     let anotherNode = node;
-    while (anotherNode.tagName !== "LI") {
+    while (!(anotherNode.tagName === "LI" && anotherNode.id !== "")) {
       anotherNode = anotherNode.parentNode;
     }
     return anotherNode.id;

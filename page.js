@@ -17,12 +17,18 @@ class Page {
   }
 
   _notifyPage() {
-    this.pageCount.innerHTML = `(${this.page}/${this.totalPages}) ${this.interval} per page`;
+    this.pageCount.innerHTML = `(${this.page + 1}/${this.totalPages + 1}) ${this.interval} per page`;
+    if (this.page === 0 || this.page === this.totalPages) {
+      this.pageCount.style.color = 'rgb(254, 121, 121)';
+    } else if (this.pageCount.style.color === 'rgb(254, 121, 121)') {
+      this.pageCount.style.color = 'white';
+    }
   }
 
   changeDictionary(dictionary) {
     this.totalPages = this._totalPages();
     this.dictionary = dictionary;
+    this._notifyPage();
   }
 
   addToPages(key) {

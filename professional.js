@@ -67,14 +67,14 @@ class Professional {
 
   _createDetailLI(field, data) {
     const li = document.createElement("li");
-    li.innerHTML = `<h2><strong>${field} : </strong></h2><h2 class="view_opt">${data}</h2>`;
+    li.innerHTML = `<h2><strong>${field} : </strong></h2><h2 class="content">${data}</h2>`;
     return li;
   }
 
   _nameDisplay() {
     const h2 = document.createElement("h2");
     h2.innerHTML = `<strong>${this.name}</strong>`;
-    h2.classList.add("title");
+    h2.classList.add("label");
     return h2;
   }
 
@@ -92,7 +92,7 @@ class Professional {
       h2.classList.add("green");
     }
     h2.appendChild(status);
-    h2.classList.add("view_opt");
+    h2.classList.add("content");
     return h2;
   }
 

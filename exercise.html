@@ -18,23 +18,23 @@
     <main>
       <header>
         <h1 id="simpleDEA">SimpleDEA</h1>
-        <section class="filters group">
+        <section class="filters">
           <article>
             <h1>Search by Name:</h1>
             <input type="text" id="search" value="" autocomplete="off">
           </article>
-          <article id="show_opts" class="view_opt">
+          <article id="show_opts">
             <h1>Show:</h1>
-            <button id="all" class="white">All</button>
+            <button id="all" class="white current_view">All</button>
             <button id="expired" class="red">Expired</button>
             <button id="active" class="green">Active</button>
           </article>
         </section>
-        <section class="group" id="page_view">
-          <button id="prev" class="white title">Prev</button>
-          <button id="next" class="white view_opt">Next</button>
+        <section id="page_view">
+          <button id="prev" class="white">Prev</button>
+          <button id="next" class="white">Next</button>
         </section>
-        <section class="axis group">
+        <section class="axis">
           <h2><strong>Name</strong></h2>
           <h2 id="page_count"></h2>
           <h2><strong>Expiration Status</strong></h2>

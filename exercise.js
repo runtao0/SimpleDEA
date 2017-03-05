@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   requestID20.getData(handleRecords).then(() => {
     store.populateUL();
-    // page __ of __
 //  refactor
+//  error message
 // test?
     // show "no results found"
     // loading screen

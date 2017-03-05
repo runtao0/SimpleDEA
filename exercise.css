@@ -75,6 +75,19 @@ strong {
   background: rgb(92, 116, 153)
 }
 
+button:hover {
+  cursor: pointer;
+  background: rgb(43, 53, 144);
+}
+
+.current_view {
+  background: rgb(43, 53, 144);
+}
+
+.current_view:hover {
+  cursor: default;
+}
+
 /* Container and Header */
 main {
   min-height: 600px;
@@ -134,17 +147,20 @@ input[type="text"]:hover, input[type="text"]:focus {
   padding: 10px 20px;
   background: rgb(75, 75, 75);
   color: white;
+}
+
+section {
   display: flex;
   flex-flow: row;
   flex-wrap: nowrap;
   justify-content: space-between;
 }
 
-.title {
+.label {
   float: left;
 }
 
-.view_opt {
+.content {
   float: right;
 }
 
@@ -216,10 +232,7 @@ li {
   background: rgb(228, 234, 247);
 }
 
-button:hover {
-  cursor: pointer;
-  background: rgb(43, 53, 144);
-}
+
 
 @media (max-width: 900px) {
   main {
@@ -233,12 +246,15 @@ button:hover {
     width: 100%;
   }
 
-  .filters > .view_opt {
-    float: left;
-    padding-top: 10px;
+  .filters {
+    flex-flow: column;
   }
 
-  .axis .title::after {
+  .filters > article:not(:first-child) {
+    padding: 10px 0 0 0;
+  }
+
+  .axis > h2:first-child::after {
     content: none;
   }
 
