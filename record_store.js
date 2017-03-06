@@ -212,6 +212,10 @@ class RecordStore {
     e.preventDefault();
     if (e.target.value === "") {
       this.populateUL();
+      if (this.currentView === "all")
+      document.getElementById(this.currentView).classList.toggle("current_view");
+      document.getElementById("all").classList.add("current_view");
+      this.currentView = 'all';
       return;
     }
     const searchString = new RegExp(e.target.value, 'i');
@@ -223,10 +227,15 @@ class RecordStore {
     });
 
     if (Object.keys(matches).length === 0) {
+      this.pages.resetPages();
       this.showNoMatches();
       return;
     }
-    this.currentView = 'all';
+
+    if (this.currentView !== "none") {
+      document.getElementById(this.currentView).classList.toggle("current_view");
+      this.currentView = 'none';
+    }
     this.populateUL(matches, 'name');
   }
 
@@ -242,7 +251,7 @@ class RecordStore {
     this.details = this.selectedProfessional.createDetails();
     setTimeout(() => {
       this.selectedProfessional.li.appendChild(this.details);
-    }, 250);
+    }, 150);
   }
 
   // changes view of previously selected Professional to hide details
@@ -253,8 +262,9 @@ class RecordStore {
       this.selectedProfessional.li.removeChild(this.details);
       this.details = false;
       setTimeout(() => {
-        this.selectedProfessional.removeClass("remove");
-      }, 300);
+        const rm = document.getElementsByClassName("remove")[0];
+        rm.classList.remove("remove");
+      }, 150);
     }
   }
 
