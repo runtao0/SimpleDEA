@@ -1,16 +1,16 @@
 // RecordStore models the collection of records of professionals registed
 // with the DEA.
 //
-// It contains
-// 1. container => a reference to the DOM element that will be
-//                           the parent of all the professional li's
-// 2. storeByTimeToExp, storeByName,
-//    expired, active => dictionaries to each professional by name, time
-//                      from the present to the expiration date, and
-//                      either expired or active
-// 3. today => present stored as a Date class
-// 4. currentView => string value that keeps track of the current view
-//                   "all", "active"
+//
+// container => a reference to the DOM element that will be
+//              the parent of all the professional li's
+// storeByTimeToExp, storeByName,
+// expired, active => dictionaries to each professional by name, time
+//                    from the present to the expiration date, and
+//                    either expired or active
+// today => present stored as a Date class
+// currentView => string value that keeps track of the current view
+//                "all", "active"
 
 class RecordStore {
   constructor(container) {
@@ -19,11 +19,20 @@ class RecordStore {
     this.storeByName = {}
     this.expired = {};
     this.active = {};
-    this.pages = new Page(container);
+    this.pages = new Pagination(container);
     this.today = new Date();
     this.currentView = "all";
 
+    this.showErrorMessage = this.showErrorMessage.bind(this);
     this.receiveRecords = this.receiveRecords.bind(this);
+  }
+
+  showErrorMessage() {
+    this.container.innerHTML = '<h1><strong>An error has occured</strong></h1>';
+  }
+
+  showNoMatches() {
+    this.container.innerHTML = '<h1><strong>No matching records</strong></h1>';
   }
 
   // 1. receives an set of records and creates a Professional from
@@ -52,12 +61,14 @@ class RecordStore {
     professional.createDisplay();
   }
 
-  // 1. checks for repeats in records (only covers duplicates)
+  // 1. checks for repeats in records and adds a number to duplicates
   // 2. stores reference to professional by name for search
   // professional => an instance of Professional
   _storeByName(professional) {
+    let dupNum = 1;
     while (this.storeByName.hasOwnProperty(professional.name.toLowerCase())) {
-      professional.noteDup();
+      dupNum += 1;
+      professional.noteDup(dupNum);
     }
     this.storeByName[professional.name.toLowerCase()] = professional;
   }
@@ -142,7 +153,7 @@ class RecordStore {
       .addEventListener('click', this._clickOnProfessional.bind(this));
     viewbuttons.addEventListener('click', this._clickViewButtons.bind(this));
     input.addEventListener('input', this._searchByName.bind(this));
-    pageView.addEventListener('click', this.pages.turnPage.bind(this));
+    pageView.addEventListener('click', this._turnPage.bind(this));
   }
 
   // callback for container event listener
@@ -170,7 +181,7 @@ class RecordStore {
   // 4. changes views of buttons
   _clickViewButtons(e) {
     e.preventDefault();
-    this.details = false;
+    this._unselect();
     if (e.target.id === this.currentView) return;
     // refactor this
     document.getElementById(this.currentView).classList.toggle("current_view");
@@ -203,7 +214,7 @@ class RecordStore {
       this.populateUL();
       return;
     }
-    const searchString = new RegExp(e.target.value.toLowerCase());
+    const searchString = new RegExp(e.target.value, 'i');
     const matches = {};
     Object.keys(this.storeByName).forEach((name) => {
       if (searchString.test(name)) {
@@ -211,8 +222,17 @@ class RecordStore {
       }
     });
 
+    if (Object.keys(matches).length === 0) {
+      this.showNoMatches();
+      return;
+    }
     this.currentView = 'all';
     this.populateUL(matches, 'name');
+  }
+
+  _turnPage(e) {
+    this._unselect();
+    this.pages.turnPage(e);
   }
 
   // changes view of selected Professional to reveal details
@@ -220,28 +240,22 @@ class RecordStore {
     this.selectedProfessional = this.storeByTimeToExp[this.selectedID];
     this.selectedProfessional.addClass("selected");
     this.details = this.selectedProfessional.createDetails();
-    this._expand(this.selectedProfessional.li);
-    this.selectedProfessional.li.appendChild(this.details)
+    setTimeout(() => {
+      this.selectedProfessional.li.appendChild(this.details);
+    }, 250);
   }
 
   // changes view of previously selected Professional to hide details
   _unselect() {
     if (this.details) {
-      this._shrink(this.selectedProfessional.li);
       this.selectedProfessional.removeClass("selected");
+      this.selectedProfessional.addClass("remove");
       this.selectedProfessional.li.removeChild(this.details);
       this.details = false;
+      setTimeout(() => {
+        this.selectedProfessional.removeClass("remove");
+      }, 300);
     }
-  }
-
-  //changes max height of Professional DOM for animating
-  _shrink(element) {
-    element.style.maxHeight = '45px';
-  }
-
-  //changes max height of Professional DOM for animating
-  _expand(element) {
-    element.style.maxHeight = '218px';
   }
 
   // checks path of event target until Professional li is found

@@ -8,8 +8,8 @@ class Professional {
     }
     this.time = time;
     this.name = this._formatName(name);
-    this.expired = time < 0;
     this.li;
+
     this._expDisplay = this._expDisplay.bind(this);
   }
 
@@ -22,8 +22,12 @@ class Professional {
     return capitalized;
   }
 
-  noteDup() {
-    this.name = `${this.name} (2)`;
+  noteDup(num) {
+    if ((/[)]/).test(this.name)) {
+      this.name = this.name.replace(/([\d])/g, num.toString());
+    } else {
+      this.name = this.name + ' (2)'
+    }
   }
 
   addOneMilisec() {
@@ -38,10 +42,6 @@ class Professional {
     this.li.classList.remove(name);
   }
 
-  setExpired() {
-    this.expired = true;
-  }
-
   createDisplay(element) {
     const li = document.createElement("li");
     li.id = this.time;
@@ -51,7 +51,7 @@ class Professional {
     container.appendChild(this._nameDisplay());
     container.appendChild(this._expDisplay());
 
-    li.style.maxHeight = '45px';
+    // li.style.maxHeight = '45px';
     li.appendChild(container);
     this.li = li;
   }
@@ -81,7 +81,7 @@ class Professional {
   _expDisplay() {
     let status;
     const h2 = document.createElement("h2");
-    if (this.expired) {
+    if (this.time < 0) {
       status = document.createTextNode("EXPIRED");
       h2.classList.add("red");
     } else if (this.time < 2592000000) {
