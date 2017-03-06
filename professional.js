@@ -1,3 +1,9 @@
+// represents a Professional from the record. Contains functions that create the
+// corresponding DOM element and details
+// name => string that represents a professional's name, can be formatted however
+// time => time in ms between expiration date and today
+// { dea_number, expiration_date, npi, provider_id } =>
+// objects that contain attributes that will be displayed in the detailed view
 class Professional {
   constructor(name, time, { dea_number, expiration_date, npi, provider_id }) {
     this.info = {
@@ -13,15 +19,7 @@ class Professional {
     this._expDisplay = this._expDisplay.bind(this);
   }
 
-  _formatName(name) {
-    const capitalized = name.toLowerCase()
-      .replace(/(^|[\s-'])\S/g, function (match) {
-        return match.toUpperCase();
-      });
-
-    return capitalized;
-  }
-
+  // distingush name duplicates
   noteDup(num) {
     if ((/[)]/).test(this.name)) {
       this.name = this.name.replace(/([\d])/g, num.toString());
@@ -30,10 +28,12 @@ class Professional {
     }
   }
 
+  // distingush expiration_date duplicates
   addOneMilisec() {
     this.time += 1;
   }
 
+  // changes class of DOM
   addClass(name) {
     this.li.classList.add(name);
   }
@@ -42,6 +42,7 @@ class Professional {
     this.li.classList.remove(name);
   }
 
+  // creates display without details (li)
   createDisplay(element) {
     const li = document.createElement("li");
     li.id = this.time;
@@ -56,6 +57,7 @@ class Professional {
     this.li = li;
   }
 
+  // creates details DOM
   createDetails(element) {
     const ul = document.createElement("ul");
     for (let field in this.info) {
@@ -63,6 +65,16 @@ class Professional {
     }
     ul.classList.add("detail");
     return ul;
+  }
+
+  // Helper methods for DOM creation
+  _formatName(name) {
+    const capitalized = name.toLowerCase()
+      .replace(/(^|[\s-'])\S/g, function (match) {
+        return match.toUpperCase();
+      });
+
+    return capitalized;
   }
 
   _createDetailLI(field, data) {
@@ -91,6 +103,7 @@ class Professional {
       status = document.createTextNode("ACTIVE");
       h2.classList.add("green");
     }
+
     h2.appendChild(status);
     h2.classList.add("content");
     return h2;

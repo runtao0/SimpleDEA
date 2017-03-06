@@ -1,3 +1,10 @@
+// class csAPI represents a generic async call that contains
+// the call's method, url, and optional data. getData accepts success and
+// error callbacks and currys them into a Promise. This also means that
+// then methods can chain onto getData. Specifics of the async call
+// is passed in when an instance is created as a JS object with attributes
+// baseUrl, path, token, and id.
+
 const simpleDEArequest = {
   baseUrl: 'https://dea.staging.credsimple.com',
   path: '/v1/clients_providers/',
@@ -18,7 +25,7 @@ class csAPI {
     return this._requestPromise().then(success, error);
   }
 
-  _requestPromise () {
+  _requestPromise() {
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.open(this.method, this.url);
