@@ -7,7 +7,7 @@
 class Professional {
   constructor(name, time, { dea_number, expiration_date, npi, provider_id }) {
     this.info = {
-      'Expiration Date': new Date(expiration_date).toDateString(),
+      'Expiration Date': this._getCorrectTime(expiration_date),
       'DEA Number': dea_number,
       'NPI': npi,
       'Provider ID': provider_id,
@@ -17,6 +17,12 @@ class Professional {
     this.li;
 
     this._expDisplay = this._expDisplay.bind(this);
+  }
+
+  _getCorrectTime(expiration_date) {
+    const date = new Date(expiration_date);
+    date.setTime(date.getTime() + date.getTimezoneOffset()*60*1000);
+    return date.toDateString();
   }
 
   // distingush name duplicates
