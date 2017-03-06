@@ -168,14 +168,11 @@ section {
   content: " (click row to view more info)";
 }
 
-/* UL */
-ul {
+/* View Container */
+#providers_container {
   width: 100%;
   height: 100%;
   overflow: scroll;
-}
-
-#providers_container {
   height: calc(100% - 174px);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -186,19 +183,9 @@ ul {
 #providers_container > h1 {
   margin-top: 50px;
   text-align: center;
-
+  font-size: 1.5em;
 }
 
-ul h2 {
-  padding: 5px 0px;
-  display: inline;
-  z-index: 0;
-}
-
-ul h2:not(:first-child) {
-  font-size: 1em;
-  padding: 5px 10px;
-}
 
 /* List Item */
 li {
@@ -212,23 +199,36 @@ li {
   box-shadow: 0px 1px 5px rgb(179, 188, 209);
 }
 
-.detail > li:last-child {
-  border-bottom: 0px;
-}
-
 .detail > li {
   width: 75%;
   border-bottom: 1px ridge rgb(136, 136, 136);
 }
 
+.detail > li:last-child {
+  border-bottom: 0px;
+}
+
+ul h2 {
+  padding: 5px 0px;
+  display: inline;
+  z-index: 0;
+}
+
+ul h2:not(:first-child) {
+  font-size: 1em;
+  padding: 5px 10px;
+}
+
+/* Animations */
+
 .selected {
-   animation-duration: .25s;
+   animation-duration: .15s;
    animation-name: slidein;
    height: 175px;
  }
 
 .remove {
-  animation-duration: .25s;
+  animation-duration: .15s;
   animation-name: slideout;
   height: 30px;
 }
@@ -258,6 +258,7 @@ li {
   background: rgb(228, 234, 247);
 }
 
+/*Media Queries*/
 @media (max-width: 900px) {
   main {
     width: 400px;
