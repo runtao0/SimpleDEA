@@ -1,3 +1,10 @@
+// csAPI is now a class that accepts a JS object that contains baseUrl,
+// path, token, and id, then creates . 
+// Method defaults to "GET" unless passed another string,
+// and it can also accept a data object.
+//
+//
+
 const simpleDEArequest = {
   baseUrl: 'https://dea.staging.credsimple.com',
   path: '/v1/clients_providers/',
@@ -18,7 +25,7 @@ class csAPI {
     return this._requestPromise().then(success, error);
   }
 
-  _requestPromise () {
+  _requestPromise() {
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.open(this.method, this.url);

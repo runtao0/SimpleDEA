@@ -14,5 +14,4 @@ document.addEventListener("DOMContentLoaded", () => {
 // error message
 // refactor
 // test?
-
 // loading screen
