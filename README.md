@@ -1,82 +1,21 @@
-# CredSimple Front-end Exercise
+# Runtao Yang's SimpleDEA
 
-This exercise is comprised of multiple parts, and should be done in order.
+[Live Link](http://runtaoyang.com/SimpleDEA/)
 
+## Part 1
+In the spirit of OOP, I turned csAPI into a class that contains all the information needed to make an async call. Call parameters can be passed in as JavaScript objects when instantiated. the getData() method makes the call and currys success and error callbacks into the subsequent Promise. This means that then statements can also be chained onto getData.
 
-## 1.  Debug
+## Part 2
+I drew inspiration from my memories of using web resources at NYU and Columbia hospitals, and represents the clearest way I would want the information organized for lab management and patient tracking. I am not sure how this data is used, but my assumptions were that users use this to keep track of DEA license renewals or for background research of a professional. I noticed that some records share the same name and NPIs but different expiration dates. Others shared the same name but different NPIs. I'm not sure exactly what this means, but assumed they were records of previous licenses or professionals that shared the same name. I accounted for these overlaps by checking for repeats in name and expiration dates.
 
-We've provided `csUtils.js` which handles all AJAX calls to one of the CredSimple APIs.
+Upon successful page load, 'exercise.js' gets the container (intended to be UL) in which the set of data will be viewed. requestID20 is an instance of csAPI and represents a call to 'https://dea.staging.credsimple.com/v1/clients_providers/20?token=3ad6aef59ee542ec881c5bc6593ba9c3'. store is an object that represents how the set of data can be processed and viewed. A call is made with getData(), and transfers the data to the store using receiveRecords(). An error message appears if the response is an error. After all the data is successfully loaded, event listeners are added to the DOM to allow a user to navigate through data on the page.
 
-This JavaScript has some problems in it that we want you to debug and fix.
+Each time a record is received, a new Professional object is instantiated, and made distinct. The store contains dictionaries that map to all the professionals for fast lookup. I included name, expiration date, and active status, but I also made it easy to add other attributes like NPI. Dictionaries can be added as objects that map to professionals, and functions to distinguish duplicates and sorting in that parameter need to be created.
 
-Fix any style or functionality problems with `csUtils.js`.
+The Professional class represents a professional that corresponds to a received record. It contains the the parameters to display: name and expiration, info to display in a detail view, and a reference to the corresponding DOM on the page.
 
-The data you receive from the API is a list of DEA records (Drug Enforcement Administration licenses that authorize doctors & nurses to write prescriptions)
+Page view is managed by a Pagination class that contains an ordered array of the current subset of data and the corresponding dictionary to the sorted parameter. It also has reference to the container DOM and a page number header. Views per page, current page and total pages are tracked.
 
-## 2.  Implement
+Default view is the first 30 records by expiration date. I added pagination because I thought it would be useful to see the full set of data. I also added a search by name feature since that seems like a basic parameter as well.
 
-We'd like to simulate the process of creating a product at CredSimple.  The
-following specifies a new product we'd like you to create, and the product
-requirements.
-
-Create a product called SimpleDEA that has the following requirements:
-
-* Show the top 30 DEA records displayed by the name attribute but sorted by expiration date.
-
-* Use your corrected version of `csUtils.js` from above to make API calls.
-
-* A button must exist that allows the user to show only DEA records that have expired as of today.
-
-* Each record's name in the list (found in the API via `record.name`) must be followed by the expiration status of the record (resolved via `record.expiration_date`).
-
-* Each expiration status must be formatted/styled to indicate visually to the user that the record it is either active (expiration date has not passed) or expired (expiration date has passed)
-
-* When an item in the list is clicked, it must show only the container with its full data profile (see diagram below).
-
-  * Each record must include its DEA number (via `record.dea_number`), NPI (via `record.npi`), Expiration Date (via `record.expiration_date`) and Provider ID (via `record.provider_id`).
-
-  * When showing the DEA record container it must expand and collapse beneath the record's row.
-
-  * If someone clicks on a DEA record it must collapse the currently visible container, so that there is only one visible at a time.
-
-
-Use the following wireframe as a general guide. Your solution may look slightly different, use your skill/judgement to decide what communicates the intent of this feature most clearly:
-
-<pre>
------------------------------------------------------------
-| SimpleDEA                         [show expired button] |
------------------------------------------------------------
-| ### Provider 1                    [ expiration status ] |
-| ### Provider 2                    [ expiration status ] |
-| ### Provider 3                    [ expiration status ] |
-|   ----------------------------------------------------  |
-|   | ### DEA number         | ### Expiration Date     |  |
-|   | ### NPI                | ### Provider ID         |  |
-|   ----------------------------------------------------  |
-| ### Provider 4                    [ expiration status ] |
-| ### Provider 5                    [ expiration status ] |
-| ### Provider 6                    [ expiration status ] |
-| ### Provider 7                    [ expiration status ] |
-| ### Provider 8                    [ expiration status ] |
-| ### Provider 9                    [ expiration status ] |
-| ### Provider ...30                [ expiration status ] |
------------------------------------------------------------
-</pre>
-
-
-**Rules:**
-
- * Please do NOT use jQuery or any other frameworks/languages (i.e. use pure JavaScript). We want to see your raw JavaScript knowledge.
-
- * You are the product designer for this application. Create a design that showcases your CSS knowledge (using only CSS, no preprocessors).
-
- * It should work in modern (HTML5) browsers. Focus on Chrome, Firefox, and Safari. IE compatibility is not required.
-
-
-**What We're Looking For:**
-
- * Proper architecture and code craft, such that it can scale to add new features easily.
-
- * The ability for this application to display data accurately and communicate clearly to the user.
-
-## Good Luck!
+For styling, I chose Cabin for the Headers and Cabin for the data. This was done haphazardly based on the first combination that looked nice together. The header is organized with flex box and the data is floated. I also used animation for height transitions.
