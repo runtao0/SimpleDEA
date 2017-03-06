@@ -19,6 +19,7 @@ class Professional {
     this._expDisplay = this._expDisplay.bind(this);
   }
 
+  // accounts for UTC date format
   _getCorrectTime(expiration_date) {
     const date = new Date(expiration_date);
     date.setTime(date.getTime() + date.getTimezoneOffset()*60*1000);
